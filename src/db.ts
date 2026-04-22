@@ -16,7 +16,7 @@ db.exec(`
 type TodoRow = {
   id: number;
   title: string;
-  done: number;  // SQLite は boolean を 0/1 で扱う
+  done: number; // SQLite は boolean を 0/1 で扱う
 };
 
 // --- TODO を追加する ---
