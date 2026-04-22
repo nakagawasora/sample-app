@@ -1,4 +1,3 @@
-
 import express from "express";
 import Database from "better-sqlite3";
 import path from "path";
@@ -25,7 +24,9 @@ type TodoRow = {
 };
 
 app.get("/api/todos", (_req, res) => {
-  const todos = db.prepare("SELECT * FROM todos ORDER BY id DESC").all() as TodoRow[];
+  const todos = db
+    .prepare("SELECT * FROM todos ORDER BY id DESC")
+    .all() as TodoRow[];
   const result = todos.map((t) => ({
     id: t.id,
     title: t.title,
@@ -46,12 +47,16 @@ app.post("/api/todos", (req, res) => {
   }
   const stmt = db.prepare("INSERT INTO todos (title) VALUES (?)");
   const info = stmt.run(title.trim());
-  res.status(201).json({ id: info.lastInsertRowid, title: title.trim(), done: false });
+  res
+    .status(201)
+    .json({ id: info.lastInsertRowid, title: title.trim(), done: false });
 });
 
 app.put("/api/todos/:id", (req, res) => {
   const { id } = req.params;
-  const todo = db.prepare("SELECT * FROM todos WHERE id = ?").get(Number(id)) as TodoRow | undefined;
+  const todo = db
+    .prepare("SELECT * FROM todos WHERE id = ?")
+    .get(Number(id)) as TodoRow | undefined;
   if (!todo) {
     res.status(404).json({ error: "見つかりません" });
     return;
